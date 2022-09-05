@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.5-alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app
+
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - $PWD/src:/app/src
+    environment:
+      - DB_HOST=db
+      - DB_PASSWORD=password
+      - DB_NAME=app
+      - DB_USERNAME=postgres
+    entrypoint: npm start
+    depends_on:
+      - db
